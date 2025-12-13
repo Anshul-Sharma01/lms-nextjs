@@ -1,9 +1,9 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Document, Schema, model, models } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 
-export interface UserAttributes {
+export interface UserAttributes extends Document {
     name: string;
     email: string;
     password: string;
