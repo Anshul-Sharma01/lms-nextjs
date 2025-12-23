@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import jwt from "jsonwebtoken";
 
 const accessTokenOptions = {
     httpOnly : true,
@@ -15,6 +16,14 @@ const refreshTokenOptions = {
     maxAge : 60 * 60 * 24 * 7, // 7 days
     path : "/"
 }
+
+
+type jwtPayload = {
+    _id : string,
+    email : string,
+    name : string
+}   
+
 
 
 export async function setAccessTokenCookie(token : string){
@@ -46,6 +55,22 @@ export async function clearAuthCookies(){
     cookieStore.delete("refreshToken");
 }
 
+
+
+export async function getUserIdFromToken() : Promise < string | null >{
+    const token = await getAccessTokenFromCookie();
+    if(!token){
+        return null;
+    }
+    
+    try{
+        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as jwtPayload;
+        return payload._id;
+    }catch(err){
+        return null;
+    }
+
+}
 
 
 

@@ -1,7 +1,7 @@
 import { connectDb } from "@/lib/mongoose";
 import { getRefreshTokenFromCookie, setAccessTokenCookie, setRefreshTokenCookie } from "@/lib/utils/cookies";
 import { NextResponse } from "next/server";
-import { jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { User } from "@/models/user.model";
 
 
