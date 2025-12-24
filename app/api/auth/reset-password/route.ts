@@ -37,7 +37,7 @@ export async function POST(req : NextRequest){
         const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
         const mailSubject = "Forgot Password Token"
-        const html = emailTemplate.replace("{{RESET_TOKEN}}", `${process.env.FRONTEND_URL}/${hashedToken}`);
+        const html = emailTemplate.replace("{{RESET_TOKEN}}", `${process.env.FRONTEND_URL}/api/auth/reset-password/${hashedToken}`);
         await sendEmail({ to : email, subject : mailSubject, html } );
 
         user.resetPasswordToken = resetToken;
