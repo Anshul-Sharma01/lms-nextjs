@@ -14,8 +14,8 @@ export interface UserAttributes extends Document {
     };
     accountStatus: "Active" | "Suspended";
     refreshToken?: string;
-    forgotPasswordToken?: string;
-    forgotPasswordExpiry?: string;
+    resetPasswordToken?: string;
+    resetPasswordExpiry?: string;
 }
 
 export interface UserMethods {
@@ -67,10 +67,10 @@ const userSchema = new Schema<UserAttributes, {}, UserMethods>(
             type: String,
             select: false,
         },
-        forgotPasswordToken: {
+        resetPasswordToken: {
             type: String,
         },
-        forgotPasswordExpiry: {
+        resetPasswordExpiry: {
             type: String,
         },
     },

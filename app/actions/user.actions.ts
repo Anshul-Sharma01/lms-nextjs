@@ -45,7 +45,7 @@ export const updateUserProfile = async (formData: FormData) => {
     }
   };
   
-  export const updateUserAvatar = async (formData: FormData) => {
+export const updateUserAvatar = async (formData: FormData) => {
     try {
         const user = await getCurrentUser();
         if (!user) throw new Error("Unauthorized request");
@@ -99,8 +99,55 @@ export const updateUserProfile = async (formData: FormData) => {
             message: err.message,
         };
     }
-  };
+};
   
+
+
+export const changeUserPassword = async(formData : FormData) => {
+    try{
+        const user = await getCurrentUser();
+        if(!user) throw new Error("Unauthorized Request !!");
+
+        const oldPassword = formData.get("oldPassword");
+        const newPassword = formData.get("newPassword");
+
+        const isValidPassword = user.isPasswordCorrect(oldPassword);
+        if(!isValidPassword){
+            throw new Error("Old Password is not correct !!");
+        }
+
+        const validationResult = registerSchema.pick({ password : true }).safeParse({
+            password : newPassword
+        })
+
+        if(!validationResult.success){
+            throw new Error("Please follow the rules for setting the new password !!");
+        }
+
+        await connectDb();
+
+        const updatedUser = await User.findByIdAndUpdate(
+            user._id,
+            { password : validationResult.data.password },
+            {
+                new : true,
+                runValidators : true,
+                select : "-password"
+            }
+        );
+        return {
+            success : true,
+            user : JSON.parse(JSON.stringify(updatedUser));
+        }
+
+    }catch(err : any){
+        return { 
+            success : false,
+            message : err.message
+        }
+    }
+}
+
 
 
 
