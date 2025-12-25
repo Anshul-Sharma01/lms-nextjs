@@ -6,6 +6,8 @@ export interface CourseInterface extends Document{
     title : string;
     slug : string;
     description : string;
+    category : string;
+    visibility : "Draft" | "Public"
     modules : Types.ObjectId[];
     tutor : Types.ObjectId;
 }
@@ -23,6 +25,15 @@ const courseSchema = new Schema < CourseInterface > ({
     description : {
         type : String,
         required : [true, "Course Description not provided"]
+    },
+    category : {
+        type : String,
+        required : [true, "Course Category not provided "]
+    },
+    visibility : {
+        type : String,
+        enum : ["Draft", "Public"],
+        default : "Draft"
     },
     modules : [
         {
