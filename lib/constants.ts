@@ -66,3 +66,5 @@ export const emailTemplate = `<!DOCTYPE html>
 </body>
 </html>
 `
+
+export const tagline = "Fuel Your Learning Journey"

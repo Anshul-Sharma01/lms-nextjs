@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * =========================================================
+ * LMS – Design Tokens (Tailwind v4)
+ * =========================================================
+ *
+ * This file defines the global color system using Tailwind v4
+ * @theme directive.
+ *
+ * DO NOT hardcode hex colors in JSX.
+ * ALWAYS use the utility classes generated from these tokens.
+ *
+ * ---------------------------------------------------------
+ * Usage example in JSX:
+ *
+ * <div class="bg-primary text-bg">
+ *   <h1 class="text-text-primary">Title</h1>
+ *   <p class="text-text-secondary">Subtitle</p>
+ *   <p class="text-text-muted">Description</p>
+ *   <button class="bg-primary-dark text-white">Action</button>
+ * </div>
+ * ---------------------------------------------------------
+ */
+
+ @theme {
+  /* =======================================================
+   * PRIMARY BRAND COLORS
+   * ======================================================= */
+
+  /**
+   * Sky Blue – Main brand color
+   * Use for:
+   * - Primary buttons
+   * - Highlights
+   * - Navbar accents
+   *
+   * Example:
+   * <button class="bg-primary text-white">Start Course</button>
+   */
+  --color-primary: #38bdf8;
+
+  /**
+   * Deep Sky – Hover / Active state
+   * Use for:
+   * - Button hover states
+   * - Active indicators
+   *
+   * Example:
+   * <button class="bg-primary-dark hover:bg-primary-light">Enroll</button>
+   */
+  --color-primary-dark: #0284c7;
+
+  /**
+   * Soft Cyan – Light accents / badges / hover backgrounds
+   *
+   * Example:
+   * <span class="bg-primary-light text-primary">New</span>
+   */
+  --color-primary-light: #67e8f9;
+
+  /* =======================================================
+   * BACKGROUND COLORS
+   * ======================================================= */
+
+  /**
+   * Main page background
+   *
+   * Example:
+   * <main class="bg-bg min-h-screen"></main>
+   */
+  --color-bg: #ffffff;
+
+  /**
+   * Muted background for sections, cards, sidebars
+   *
+   * Example:
+   * <div class="bg-bg-muted p-4 rounded-md shadow-md"></div>
+   */
+  --color-bg-muted: #f8fafc;
+
+  /**
+   * Card / modal / surface background
+   *
+   * Example:
+   * <div class="bg-card-bg rounded-lg shadow-md p-4"></div>
+   */
+  --color-card-bg: #ffffff;
+
+  /* =======================================================
+   * TEXT COLORS
+   * ======================================================= */
+
+  /**
+   * Primary text
+   * Use for:
+   * - Paragraphs
+   * - Headings
+   * - Forms
+   *
+   * Example:
+   * <h1 class="text-text-primary">Course Title</h1>
+   */
+  --color-text-primary: #0f172a;
+
+  /**
+   * Secondary text
+   * Use for:
+   * - Meta information
+   * - Subtitles
+   * - Small labels
+   *
+   * Example:
+   * <p class="text-text-secondary text-sm">Author info</p>
+   */
+  --color-text-secondary: #475569;
+
+  /**
+   * Muted / helper text
+   * Use for:
+   * - Descriptions
+   * - Disabled text
+   * - Form hints
+   *
+   * Example:
+   * <p class="text-text-muted text-xs">Optional info</p>
+   */
+  --color-text-muted: #94a3b8;
+
+  /* =======================================================
+   * BORDER & UI COLORS
+   * ======================================================= */
+
+  /**
+   * Borders for cards, inputs, containers
+   *
+   * Example:
+   * <div class="border border-border rounded-md"></div>
+   */
+  --color-border: #e2e8f0;
+
+  /* =======================================================
+   * STATUS COLORS
+   * ======================================================= */
+
+  /**
+   * Success messages / badges / progress
+   *
+   * Example:
+   * <p class="text-success">Lesson Completed ✅</p>
+   */
+  --color-success: #22c55e;
+
+  /**
+   * Warning / alerts / due dates
+   *
+   * Example:
+   * <p class="text-warning">Assignment due soon ⚠️</p>
+   */
+  --color-warning: #f59e0b;
+
+  /**
+   * Error / validation / failure messages
+   *
+   * Example:
+   * <p class="text-error">Submission failed ❌</p>
+   */
+  --color-error: #ef4444;
+
+  /* =======================================================
+   * SHADOWS
+   * ======================================================= */
+
+  /**
+   * Small shadow – subtle depth
+   * Example: card hover, small popups
+   */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /**
+   * Medium shadow – moderate depth
+   * Example: cards, modals
+   */
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.06);
+
+  /**
+   * Large shadow – prominent depth
+   * Example: main modals, overlays
+   */
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  /* =======================================================
+   * BORDER RADIUS
+   * ======================================================= */
+
+  /**
+   * Small radius – buttons, small elements
+   */
+  --radius-sm: 6px;
+
+  /**
+   * Medium radius – cards, inputs
+   */
+  --radius-md: 10px;
+
+  /**
+   * Large radius – modals, large containers
+   */
+  --radius-lg: 16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
