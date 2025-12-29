@@ -54,7 +54,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Strip */}
-      <div className="border-t border-border mt-6 pt-4 text-center text-xs text-text-muted">
+      <div className="border-t border-border mt-6 mb-6 pt-4 text-center text-xs text-text-muted">
         Designed with ❤️ by EduFlux Team
       </div>
     </footer>
