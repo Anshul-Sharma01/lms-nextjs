@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { tagline } from "@/lib/constants";
+import UserDropdown from "../UserDropdown";
+
+import { useAuth } from "@/app/context/AuthContext";
 
 type User = {
   name: string;
@@ -10,25 +13,10 @@ type User = {
 };
 
 const Navbar = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user: currentUser, isLoading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [profileDropdown, setProfileDropdown] = useState(false);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch("/api/user/current-user", { cache: "no-store" });
-        const data = await res.json();
-        setCurrentUser(data.user);
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchUser();
-  }, []);
+
 
   return (
     <nav className="bg-bg shadow-md sticky top-0 z-50">
@@ -89,32 +77,7 @@ const Navbar = () => {
                   </Link>
                 </>
               ) : (
-                <div className="relative">
-                  <button
-                    onClick={() => setProfileDropdown(!profileDropdown)}
-                    className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-primary-light text-primary hover:bg-primary-dark hover:text-white transition"
-                  >
-                    <span>Hello, {currentUser.name.split(" ")[0]}</span>
-                    <img
-                      src={currentUser.avatar || "/default-avatar.png"}
-                      alt="avatar"
-                      className="w-6 h-6 rounded-full"
-                    />
-                  </button>
-                  {profileDropdown && (
-                    <ul className="absolute right-0 mt-2 w-40 bg-bg shadow-lg rounded-lg overflow-hidden">
-                      <li className="px-4 py-2 hover:bg-primary-light hover:text-white">
-                        <Link href="/profile">Profile</Link>
-                      </li>
-                      <li className="px-4 py-2 hover:bg-primary-light hover:text-white">
-                        <Link href="/settings">Settings</Link>
-                      </li>
-                      <li className="px-4 py-2 hover:bg-primary-light hover:text-white">
-                        <Link href="/logout">Logout</Link>
-                      </li>
-                    </ul>
-                  )}
-                </div>
+                <UserDropdown user={currentUser} />
               ))}
           </div>
 

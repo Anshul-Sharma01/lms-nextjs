@@ -3,14 +3,20 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
+import { Eye, EyeOff } from "lucide-react";
 
 type Role = "User" | "Tutor";
 
 export default function Signup() {
   const [step, setStep] = useState(1);
+  const router = useRouter();
+  const { login } = useAuth();
   const [role, setRole] = useState<Role | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // 🔹 avatar file + preview
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -72,7 +78,8 @@ export default function Signup() {
       }
 
       console.log("Signup success:", data);
-      // redirect / update auth state here
+
+      login(data.data);
     } catch (err: any) {
       toast.error(err?.message);
     } finally {
@@ -219,7 +226,21 @@ export default function Signup() {
         {/* STEP 4 — PASSWORD */}
         {step === 4 && (
           <div className="mt-6 space-y-4">
-            <Input label="Password" type="password" value={password} onChange={setPassword} />
+            <div className="relative">
+              <Input
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={setPassword}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-[34px] text-text-muted hover:text-text-primary transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             <Input
               label="Confirm Password"
               type="password"

@@ -58,7 +58,7 @@ export const updateUserAvatar = async (formData: FormData) => {
 
         if (!validationResult.success) {
             throw new Error(
-                validationResult.error?.errors[0]?.message || "Invalid avatar"
+                validationResult.error?.issues[0]?.message || "Invalid avatar"
             );
         }
 
