@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
@@ -15,6 +15,15 @@ export default function Signup() {
   // 🔹 avatar file + preview
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
+  // Cleanup object URL to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -161,6 +170,7 @@ export default function Signup() {
                   {avatarPreview ? (
                     <img
                       src={avatarPreview}
+                      alt="Avatar Preview"
                       className="h-full w-full object-cover"
                     />
                   ) : (

@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "../utils/auth"
 
-export function withAuth(handler : Function){
-    return async function(){
+export function withAuth(handler: Function) {
+    return async function (req: any, ...args: any[]) {
         const user = await getCurrentUser();
 
-        if(!user){
+        if (!user) {
             return NextResponse.json({
-                success : false,
-                error : "Unauthorized"
+                success: false,
+                error: "Unauthorized"
             }, {
-                status : 401
+                status: 401
             });
         }
 
-        return handler(user);
+        return handler(req, user, ...args);
     }
 }
 
