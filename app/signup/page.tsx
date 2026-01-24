@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 type Role = "User" | "Tutor";
 
@@ -10,9 +11,15 @@ export default function Signup() {
   const [role, setRole] = useState<Role | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState<string | null>(null);
+
+  // 🔹 avatar file + preview
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const passwordRules = {
     length: password.length >= 8,
@@ -28,6 +35,42 @@ export default function Signup() {
   const allPasswordValid =
     Object.values(passwordRules).every(Boolean) && passwordsMatch;
 
+  // ✅ FINAL SUBMIT
+  const handleSignUp = async () => {
+    try {
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("role", role ?? "User");
+
+      if (avatarFile) {
+        formData.append("avatar", avatarFile);
+      }
+
+      setIsLoading(true);
+
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: formData, // ❗ DO NOT set Content-Type
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Signup failed");
+      }
+
+      console.log("Signup success:", data);
+      // redirect / update auth state here
+    } catch (err: any) {
+      toast.error(err?.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-muted px-4">
       <div className="w-full max-w-md bg-card-bg p-8 rounded-lg shadow-md border border-border">
@@ -40,9 +83,8 @@ export default function Signup() {
           {[1, 2, 3, 4].map((s) => (
             <span
               key={s}
-              className={`h-2 w-8 rounded-full ${
-                step === s ? "bg-primary" : "bg-border"
-              }`}
+              className={`h-2 w-8 rounded-full ${step === s ? "bg-primary" : "bg-border"
+                }`}
             />
           ))}
         </div>
@@ -67,11 +109,10 @@ export default function Signup() {
             <button
               disabled={!role}
               onClick={() => setStep(2)}
-              className={`w-full py-2 rounded-lg font-medium transition ${
-                role
-                  ? "bg-primary hover:bg-primary-dark text-white"
-                  : "bg-border text-text-muted cursor-not-allowed"
-              }`}
+              className={`w-full py-2 rounded-lg font-medium transition ${role
+                ? "bg-primary hover:bg-primary-dark text-white"
+                : "bg-border text-text-muted cursor-not-allowed"
+                }`}
             >
               Continue
             </button>
@@ -92,7 +133,7 @@ export default function Signup() {
             <div className="flex space-x-2">
               <button
                 onClick={() => setStep(1)}
-                className="w-full py-2 rounded-lg border border-border text-text-secondary hover:bg-bg-muted"
+                className="w-full py-2 rounded-lg border border-border"
               >
                 Back
               </button>
@@ -100,11 +141,10 @@ export default function Signup() {
               <button
                 disabled={!name || !email}
                 onClick={() => setStep(3)}
-                className={`w-full py-2 rounded-lg font-medium transition ${
-                  name && email
-                    ? "bg-primary hover:bg-primary-dark text-white"
-                    : "bg-border text-text-muted cursor-not-allowed"
-                }`}
+                className={`w-full py-2 rounded-lg ${name && email
+                  ? "bg-primary text-white"
+                  : "bg-border text-text-muted"
+                  }`}
               >
                 Continue
               </button>
@@ -117,15 +157,16 @@ export default function Signup() {
           <div className="mt-8 space-y-6">
             <div className="flex flex-col items-center space-y-3">
               <div className="relative">
-                <div className="h-28 w-28 rounded-full border border-border bg-bg-muted flex items-center justify-center overflow-hidden">
-                  {avatar ? (
+                <div className="h-28 w-28 rounded-full border border-border overflow-hidden">
+                  {avatarPreview ? (
                     <img
-                      src={avatar}
-                      alt="Avatar preview"
+                      src={avatarPreview}
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <span className="text-text-muted text-sm">Avatar</span>
+                    <div className="h-full w-full flex items-center justify-center text-text-muted">
+                      Avatar
+                    </div>
                   )}
                 </div>
 
@@ -137,30 +178,27 @@ export default function Signup() {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (!file) return;
-                      setAvatar(URL.createObjectURL(file));
+                      setAvatarFile(file);
+                      setAvatarPreview(URL.createObjectURL(file));
                     }}
                   />
-                  <span className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center shadow-sm hover:bg-primary-dark transition">
+                  <span className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
                     ✎
                   </span>
                 </label>
               </div>
-
-              <p className="text-xs text-text-muted">
-                Upload a profile photo (optional)
-              </p>
             </div>
 
             <div className="flex space-x-2">
               <button
                 onClick={() => setStep(2)}
-                className="w-full py-2 rounded-lg border border-border text-text-secondary hover:bg-bg-muted"
+                className="w-full py-2 rounded-lg border"
               >
                 Back
               </button>
               <button
                 onClick={() => setStep(4)}
-                className="w-full py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium"
+                className="w-full py-2 rounded-lg bg-primary text-white"
               >
                 Continue
               </button>
@@ -171,42 +209,21 @@ export default function Signup() {
         {/* STEP 4 — PASSWORD */}
         {step === 4 && (
           <div className="mt-6 space-y-4">
-            <div>
-              <label className="text-sm text-text-secondary">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border border-border rounded-md focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm text-text-secondary">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border border-border rounded-md focus:ring-2 focus:ring-primary"
-              />
-            </div>
+            <Input label="Password" type="password" value={password} onChange={setPassword} />
+            <Input
+              label="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+            />
 
             <ul className="text-sm space-y-1">
               {Object.entries(passwordRules).map(([key, valid]) => (
-                <li
-                  key={key}
-                  className={valid ? "text-success" : "text-text-muted"}
-                >
+                <li key={key} className={valid ? "text-success" : "text-text-muted"}>
                   ✓ {ruleLabel(key)}
                 </li>
               ))}
-              <li
-                className={
-                  passwordsMatch ? "text-success" : "text-text-muted"
-                }
-              >
+              <li className={passwordsMatch ? "text-success" : "text-text-muted"}>
                 ✓ Passwords match
               </li>
             </ul>
@@ -214,20 +231,20 @@ export default function Signup() {
             <div className="flex space-x-2">
               <button
                 onClick={() => setStep(3)}
-                className="w-full py-2 rounded-lg border border-border text-text-secondary hover:bg-bg-muted"
+                className="w-full py-2 rounded-lg border"
               >
                 Back
               </button>
 
               <button
                 disabled={!allPasswordValid}
-                className={`w-full py-2 rounded-lg font-medium transition ${
-                  allPasswordValid
-                    ? "bg-primary hover:bg-primary-dark text-white"
-                    : "bg-border text-text-muted cursor-not-allowed"
-                }`}
+                onClick={handleSignUp}
+                className={`w-full py-2 rounded-lg ${allPasswordValid
+                  ? "bg-primary text-white"
+                  : "bg-border text-text-muted"
+                  }`}
               >
-                Create Account
+                {isLoading ? "Creating..." : "Create Account"}
               </button>
             </div>
           </div>
@@ -260,19 +277,11 @@ function RoleCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left p-4 rounded-lg border transition ${
-        selected
-          ? "border-primary bg-primary-light/20"
-          : "border-border hover:bg-bg-muted"
-      }`}
+      className={`w-full p-4 rounded-lg border ${selected ? "border-primary" : "border-border"
+        }`}
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <h3 className="font-semibold text-text-primary">{title}</h3>
-          <p className="text-sm text-text-secondary mt-1">{description}</p>
-        </div>
-        {selected && <span className="text-primary font-bold">✓</span>}
-      </div>
+      <h3 className="font-semibold">{title}</h3>
+      <p className="text-sm text-text-secondary">{description}</p>
     </button>
   );
 }
@@ -290,12 +299,12 @@ function Input({
 }) {
   return (
     <div>
-      <label className="text-sm text-text-secondary">{label}</label>
+      <label className="text-sm">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full px-4 py-2 border border-border rounded-md focus:ring-2 focus:ring-primary"
+        className="mt-1 w-full px-4 py-2 border rounded-md"
       />
     </div>
   );

@@ -1,159 +1,284 @@
-"use client";
-
 import Link from "next/link";
+import {
+  ArrowRight,
+  Terminal,
+  Cpu,
+  Palette,
+  Globe,
+  Zap,
+  Trophy,
+  Flame,
+  BookOpen,
+  Target,
+  Users,
+  Star
+} from "lucide-react";
+import React from "react";
 
 export default function HomePage() {
   return (
     <main className="bg-bg text-text-primary overflow-hidden">
-
-      {/* 1️⃣ HERO — PRODUCT BENTO */}
-      <section className="relative py-32">
-        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-primary-light/50 rounded-full blur-3xl" />
-        <div className="absolute top-32 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl" />
+      {/* 1️⃣ HERO SECTION */}
+      <section className="relative py-32 lg:py-48 overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10" />
+        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-primary-light/10 rounded-full blur-[100px] -z-10" />
 
         <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary-light text-primary text-sm font-medium">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light/10 border border-primary-light/20 text-primary text-sm font-medium">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
               Skill-first learning platform
-            </span>
+            </div>
 
-            <h1 className="mt-6 text-5xl md:text-6xl font-bold leading-tight">
-              Learn with structure.
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
+              Learn with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">structure</span>.
               <br />
-              <span className="text-primary">Progress with clarity.</span>
+              Progress with clarity.
             </h1>
 
-            <p className="mt-6 text-text-secondary max-w-xl">
-              EduFlux helps you master skills through structured paths,
-              real-world projects, and measurable progress — not endless videos.
+            <p className="text-xl text-text-secondary max-w-xl leading-relaxed">
+              Master skills through structured paths, real-world projects, and measurable progress. No fluff, just results.
             </p>
 
-            <div className="mt-10 flex gap-4 flex-wrap">
-              <Link href="/courses" className="px-6 py-3 rounded-lg bg-primary text-white font-medium shadow-md hover:bg-primary-dark transition">
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/courses"
+                className="group flex items-center gap-2 px-8 py-4 rounded-xl bg-primary text-white font-semibold shadow-lg shadow-primary/25 hover:bg-primary-dark hover:shadow-primary/40 transition-all transform hover:-translate-y-1"
+              >
                 View Learning Paths
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/signup" className="px-6 py-3 rounded-lg border border-border hover:bg-bg-muted transition">
-                Start Free
+              <Link
+                href="/signup"
+                className="px-8 py-4 rounded-xl border border-border bg-white hover:bg-bg-muted font-medium transition-colors"
+              >
+                Start for Free
               </Link>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-text-muted">
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className={`w-8 h-8 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center overflow-hidden`}>
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} alt="User" />
+                  </div>
+                ))}
+              </div>
+              <p>Joined by 50,000+ developers</p>
             </div>
           </div>
 
-          {/* Bento */}
-          <div className="grid grid-cols-2 gap-4">
-            <ProgressRingCard />
-            <ModuleStackCard />
-            <StreakCard />
+          {/* Hero Visuals */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary-light/20 to-transparent blur-3xl -z-10" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4 translate-y-8">
+                <StatCard
+                  icon={<Target className="w-5 h-5 text-primary" />}
+                  label="Goal Completion"
+                  value="94%"
+                  trend="+12%"
+                />
+                <StatCard
+                  icon={<Zap className="w-5 h-5 text-warning" />}
+                  label="Learning Streak"
+                  value="12 Days"
+                  sub="Keep it up!"
+                />
+              </div>
+              <div className="space-y-4">
+                <StatCard
+                  icon={<Trophy className="w-5 h-5 text-yellow-500" />}
+                  label="Current Rank"
+                  value="Top 5%"
+                  sub="Global Leaderboard"
+                />
+                <div className="p-6 rounded-2xl bg-white border border-border shadow-xl hover:shadow-2xl transition-all">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="font-semibold">Daily Progress</span>
+                    <span className="text-primary font-bold">80%</span>
+                  </div>
+                  <div className="h-2 w-full bg-bg-muted rounded-full overflow-hidden">
+                    <div className="h-full w-[80%] bg-primary rounded-full" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 2️⃣ TRUST STRIP */}
-      <section className="bg-bg-muted border-y border-border">
-        <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center text-sm text-text-secondary">
-          <span>50k+ active learners</span>
-          <span>Project-based curriculum</span>
-          <span>Career-aligned skills</span>
-          <span>Self-paced mastery</span>
-        </div>
-      </section>
-
-      {/* 3️⃣ LEARNING OUTCOMES — REAL UI */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-          <Outcome title="Structured mastery" value="92%" />
-          <Outcome title="Project completion" value="4.8★" />
-          <Outcome title="Skill confidence" value="10x" />
-        </div>
-      </section>
-
-      {/* 4️⃣ TRACKS — SEGMENTED */}
-      <section className="bg-bg-muted py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12">Career learning tracks</h2>
-          <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
-            {["Frontend", "Backend", "UI/UX", "DevOps"].map(track => (
-              <TrackCard key={track} title={track} />
+      <section className="border-y border-border bg-bg-muted/50">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+            {["Next.js", "React", "TypeScript", "Node.js", "Tailwind CSS"].map((tech) => (
+              <span key={tech} className="text-xl font-bold text-text-muted">{tech}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5️⃣ LEARNING FLOW */}
-      <section className="py-28">
-        <div className="max-w-5xl mx-auto px-6 space-y-12">
-          {[
-            "Choose a learning path",
-            "Complete focused modules",
-            "Build real projects",
-            "Track skill growth"
-          ].map((step, i) => (
-            <FlowStep key={step} step={i + 1} title={step} />
-          ))}
-        </div>
-      </section>
+      {/* 3️⃣ LEARNING TRACKS */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Structured Career Tracks</h2>
+            <p className="text-text-secondary text-lg">Choose a specialization and follow a proven curriculum designed by industry experts.</p>
+          </div>
 
-      {/* 6️⃣ STATS — SIGNAL */}
-      <section className="bg-primary py-24 text-white">
-        <div className="max-w-7xl mx-auto px-6 grid sm:grid-cols-3 gap-10 text-center">
-          <Stat value="95%" label="Completion rate" />
-          <Stat value="4.9 / 5" label="Learner satisfaction" />
-          <Stat value="3x faster" label="Skill acquisition" />
-        </div>
-      </section>
-
-      {/* 7️⃣ PHILOSOPHY — PRODUCT */}
-      <section className="py-28">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="p-12 rounded-2xl bg-card-bg border border-border shadow-lg">
-            <h2 className="text-3xl font-bold">Designed for focus</h2>
-            <p className="mt-6 text-text-secondary">
-              Every lesson is intentional. No noise, no filler — only what moves you forward.
-            </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <TrackCard
+              icon={<Globe className="w-6 h-6" />}
+              title="Frontend Dev"
+              desc="Master React, Next.js, and modern UI engineering."
+              color="text-blue-500"
+              bg="bg-blue-50"
+            />
+            <TrackCard
+              icon={<Terminal className="w-6 h-6" />}
+              title="Backend Dev"
+              desc="Build scalable APIs with Node, Go, and Python."
+              color="text-emerald-500"
+              bg="bg-emerald-50"
+            />
+            <TrackCard
+              icon={<Palette className="w-6 h-6" />}
+              title="UI/UX Design"
+              desc="Craft beautiful interfaces and user experiences."
+              color="text-purple-500"
+              bg="bg-purple-50"
+            />
+            <TrackCard
+              icon={<Cpu className="w-6 h-6" />}
+              title="DevOps"
+              desc="Master CI/CD, Docker, and Cloud Infrastructure."
+              color="text-orange-500"
+              bg="bg-orange-50"
+            />
           </div>
         </div>
       </section>
 
-      {/* 8️⃣ COURSES */}
-      <section className="bg-bg-muted py-28">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-          {["Modern Web Dev", "Advanced React", "System Design"].map(course => (
-            <CourseCard key={course} title={course} />
-          ))}
-        </div>
-      </section>
-
-      {/* 9️⃣ TESTIMONIAL */}
-      <section className="py-28">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="p-10 rounded-2xl bg-card-bg border border-border shadow-lg">
-            <p className="text-xl font-medium">
-              “EduFlux gave me structure I couldn’t find anywhere else.”
-            </p>
-            <p className="mt-6 text-text-muted">— Frontend Engineer</p>
+      {/* 4️⃣ FEATURES / BENEFITS */}
+      <section className="py-24 bg-bg-muted relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Why learners choose EduFlux</h2>
+            <div className="space-y-8">
+              <FeatureRow
+                icon={<BookOpen className="w-5 h-5 text-white" />}
+                title="Project-based Learning"
+                desc="Stop watching, start building. Every module includes a real-world project."
+                color="bg-blue-500"
+              />
+              <FeatureRow
+                icon={<ArrowRight className="w-5 h-5 text-white" />}
+                title="Structured Roadmap"
+                desc="No more tutorial hell. Follow a clear step-by-step path to mastery."
+                color="bg-purple-500"
+              />
+              <FeatureRow
+                icon={<Users className="w-5 h-5 text-white" />}
+                title="Community & Code Reviews"
+                desc="Get feedback from mentors and peers to improve your code quality."
+                color="bg-emerald-500"
+              />
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-light/30 to-purple-500/10 rounded-2xl blur-2xl transform rotate-3" />
+            <div className="relative bg-white p-8 rounded-2xl shadow-xl border border-border">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                  <Flame className="w-6 h-6 text-yellow-500" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">Weekly Leaderboard</h3>
+                  <p className="text-text-muted text-sm">Top performers this week</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-bg-muted transition-colors">
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-text-muted w-4">#{i}</span>
+                      <div className="w-8 h-8 rounded-full bg-gray-200" />
+                      <span className="font-medium">Developer {i}</span>
+                    </div>
+                    <span className="font-mono text-primary font-bold">{1000 - (i * 50)} XP</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 🔟 PERKS */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-          <Perk title="Zero distractions" />
-          <Perk title="Progress visibility" />
-          <Perk title="Mobile-first design" />
+      {/* 5️⃣ POPULAR COURSES */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl font-bold">Popular Courses</h2>
+              <p className="text-text-secondary mt-2">Start with our highest-rated learning paths</p>
+            </div>
+            <Link href="/courses" className="text-primary font-medium hover:text-primary-dark flex items-center gap-1">
+              All Courses <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <CourseCard
+              title="Fullstack React Masterclass"
+              students="12.5k"
+              rating="4.9"
+              image="from-blue-500 to-indigo-600"
+              tags={["React", "Node.js", "Postgres"]}
+            />
+            <CourseCard
+              title="Advanced System Design"
+              students="8.2k"
+              rating="4.8"
+              image="from-emerald-500 to-teal-600"
+              tags={["Architecture", "Scaling", "Cloud"]}
+            />
+            <CourseCard
+              title="UI/UX for Developers"
+              students="5.1k"
+              rating="4.9"
+              image="from-purple-500 to-pink-600"
+              tags={["Figma", "Design Systems", "CSS"]}
+            />
+          </div>
         </div>
       </section>
 
-      {/* 1️⃣1️⃣ FINAL CTA */}
-      <section className="bg-primary py-28 text-center text-white">
-        <h2 className="text-4xl font-bold">Build skills that compound</h2>
-        <p className="mt-4 text-white/80">Start learning with clarity today.</p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Link href="/signup" className="px-8 py-3 bg-white text-primary rounded-lg font-semibold">
-            Join Free
-          </Link>
-          <Link href="/courses" className="px-8 py-3 border border-white/40 rounded-lg">
-            Browse Courses
-          </Link>
+      {/* 6️⃣ CTA SECTION */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto rounded-3xl bg-primary overflow-hidden relative text-white text-center py-20 px-6">
+          {/* Abstract Shapes */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3" />
+
+          <div className="relative z-10">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to level up your career?</h2>
+            <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10">
+              Join thousands of developers building real skills. Start your free trial today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/signup" className="px-8 py-4 bg-white text-primary rounded-xl font-bold hover:bg-gray-50 transition-colors shadow-lg">
+                Get Started for Free
+              </Link>
+              <Link href="/courses" className="px-8 py-4 bg-primary-dark/50 text-white border border-white/20 rounded-xl font-medium hover:bg-primary-dark transition-colors">
+                Explore Catalog
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -162,106 +287,101 @@ export default function HomePage() {
 
 /* ================= COMPONENTS ================= */
 
-function ProgressRingCard() {
-  return (
-    <div className="p-6 rounded-xl bg-card-bg border border-border shadow-sm">
-      <p className="font-semibold">Overall Progress</p>
-      <div className="mt-6 w-24 h-24 rounded-full border-4 border-primary-light flex items-center justify-center mx-auto">
-        <span className="text-primary font-bold">72%</span>
-      </div>
-    </div>
-  );
+interface StatCardProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  trend?: string;
+  sub?: string;
 }
 
-function ModuleStackCard() {
+function StatCard({ icon, label, value, trend, sub }: StatCardProps) {
   return (
-    <div className="p-6 rounded-xl bg-card-bg border border-border shadow-sm">
-      <p className="font-semibold">Course Structure</p>
-      <div className="mt-4 space-y-2">
-        <div className="h-2 bg-primary rounded" />
-        <div className="h-2 bg-primary-light rounded" />
-        <div className="h-2 bg-bg-muted rounded" />
+    <div className="p-5 rounded-xl bg-white border border-border shadow-lg hover:shadow-xl transition-all">
+      <div className="flex items-start justify-between mb-2">
+        <div className="p-2 rounded-lg bg-bg-muted">{icon}</div>
+        {trend && <span className="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">{trend}</span>}
+      </div>
+      <div>
+        <p className="text-text-muted text-sm font-medium">{label}</p>
+        <p className="text-2xl font-bold text-text-primary mt-1">{value}</p>
+        {sub && <p className="text-xs text-text-muted mt-1">{sub}</p>}
       </div>
     </div>
-  );
+  )
 }
 
-function StreakCard() {
+interface TrackCardProps {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  color: string;
+  bg: string;
+}
+
+function TrackCard({ icon, title, desc, color, bg }: TrackCardProps) {
   return (
-    <div className="col-span-2 p-6 rounded-xl bg-card-bg border border-border shadow-sm">
-      <p className="font-semibold">Learning Streak</p>
-      <div className="mt-4 flex gap-2">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="w-8 h-8 rounded bg-primary-light" />
-        ))}
+    <div className="p-6 rounded-2xl bg-white border border-border shadow-sm hover:shadow-md transition-all hover:-translate-y-1 group">
+      <div className={`w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold mb-2 text-text-primary">{title}</h3>
+      <p className="text-text-secondary text-sm leading-relaxed">{desc}</p>
+    </div>
+  )
+}
+
+interface FeatureRowProps {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+  color: string;
+}
+
+function FeatureRow({ icon, title, desc, color }: FeatureRowProps) {
+  return (
+    <div className="flex gap-4">
+      <div className={`w-10 h-10 rounded-full ${color} flex items-center justify-center flex-shrink-0 mt-1 shadow-md`}>
+        {icon}
+      </div>
+      <div>
+        <h3 className="font-bold text-lg text-text-primary">{title}</h3>
+        <p className="text-text-muted leading-relaxed">{desc}</p>
       </div>
     </div>
-  );
+  )
 }
 
-function Outcome({ title, value }: { title: string; value: string }) {
-  return (
-    <div className="p-8 rounded-2xl bg-card-bg border border-border shadow-md text-center">
-      <p className="text-4xl font-bold text-primary">{value}</p>
-      <p className="mt-4 font-semibold">{title}</p>
-    </div>
-  );
+interface CourseCardProps {
+  title: string;
+  students: string;
+  rating: string;
+  image: string;
+  tags: string[];
 }
 
-function TrackCard({ title }: { title: string }) {
+function CourseCard({ title, students, rating, image, tags }: CourseCardProps) {
   return (
-    <div className="p-6 rounded-xl bg-card-bg border border-border">
-      <h3 className="font-semibold">{title} Engineer</h3>
-      <div className="mt-4 flex gap-1">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="h-2 flex-1 rounded bg-primary-light" />
-        ))}
+    <div className="group rounded-2xl bg-white border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all">
+      <div className={`h-48 bg-gradient-to-br ${image} relative p-6 flex flex-col justify-end`}>
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+          <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" /> {rating}
+        </div>
       </div>
-    </div>
-  );
-}
-
-function FlowStep({ step, title }: { step: number; title: string }) {
-  return (
-    <div className="flex gap-6 items-start">
-      <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold">
-        {step}
-      </div>
-      <div className="p-6 rounded-xl bg-card-bg border border-border flex-1">
-        <p className="font-semibold">{title}</p>
-      </div>
-    </div>
-  );
-}
-
-function CourseCard({ title }: { title: string }) {
-  return (
-    <div className="rounded-xl bg-card-bg border border-border overflow-hidden shadow-sm">
-      <div className="h-44 bg-gradient-to-br from-primary-light to-bg-muted" />
       <div className="p-6">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="mt-2 text-text-secondary text-sm">
-          Hands-on, project-driven learning
-        </p>
+        <div className="flex gap-2 mb-4">
+          {tags.map((t: string) => (
+            <span key={t} className="text-xs font-medium px-2 py-1 rounded-md bg-bg-muted text-text-secondary border border-border">
+              {t}
+            </span>
+          ))}
+        </div>
+        <h3 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors">{title}</h3>
+        <div className="flex items-center gap-2 text-text-muted text-sm">
+          <Users className="w-4 h-4" />
+          <span>{students} students</span>
+        </div>
       </div>
     </div>
-  );
-}
-
-function Perk({ title }: { title: string }) {
-  return (
-    <div className="p-6 rounded-xl bg-bg-muted border border-border text-center">
-      <div className="w-10 h-10 rounded-full bg-primary-light mx-auto mb-4" />
-      <p className="font-semibold">{title}</p>
-    </div>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <p className="text-4xl font-bold">{value}</p>
-      <p className="mt-2 text-white/80">{label}</p>
-    </div>
-  );
+  )
 }

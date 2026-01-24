@@ -33,9 +33,9 @@ export async function uploadToCloudinary(
                     folder: folder,
                     resource_type: "image",
                     transformation: [
-                        { width: 500, height: 500, crop: "fill", gravity: "face" }, 
-                        { quality: "auto" }, 
-                        { format: "webp" }, 
+                        { width: 500, height: 500, crop: "fill", gravity: "face" },
+                        { quality: "auto" },
+                        { format: "webp" },
                     ],
                 },
                 (error, result) => {

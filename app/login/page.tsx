@@ -2,10 +2,36 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast.dismiss();
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to Login !!");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-muted px-4">
@@ -17,7 +43,7 @@ export default function Login() {
           Login to continue learning
         </p>
 
-        <form className="mt-6 space-y-4">
+        <form className="mt-6 space-y-4" onSubmit={handleLogin}>
           <div>
             <label className="text-sm text-text-secondary">Email</label>
             <input
@@ -44,9 +70,9 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium transition"
+            className={`w-full cursor-pointer py-2 rounded-lg  ${isLoading ? "bg-gray-500" : "bg-primary hover:bg-primary-dark"} text-white font-medium transition `}
           >
-            Login
+            {isLoading ? "logging In..." : "Login"}
           </button>
         </form>
 

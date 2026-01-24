@@ -4,42 +4,39 @@ import { User } from "@/models/user.model";
 import { setAccessTokenCookie, setRefreshTokenCookie } from "@/lib/utils/cookies";
 
 
-export async function POST(req : NextRequest){
-    try{
+export async function POST(req: NextRequest) {
+    try {
 
-        const formData = await req.formData();
+        const { email, password } = await req.json();
 
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
-        if(!email || !password){
+        if (!email || !password) {
             return NextResponse.json({
-                success : false,
-                error : "Validation failed",
+                success: false,
+                error: "Validation failed",
             }, {
-                status : 400
+                status: 400
             })
         }
 
         await connectDb();
 
         const user = await User.findOne({ email });
-        if(!user){
+        if (!user) {
             return NextResponse.json({
-                success : false,
-                error : "This email does not exists in the database"
+                success: false,
+                error: "This email does not exists in the database"
             }, {
-                status : 400
+                status: 400
             });
         }
 
-        const isPassValid = user.isPasswordCorrect(password);
-        if(!isPassValid){
+        const isPassValid = await user.isPasswordCorrect(password);
+        if (!isPassValid) {
             return NextResponse.json({
-                success : false,
-                error : "Password is not valid "
+                success: false,
+                error: "Password is not valid "
             }, {
-                status : 400
+                status: 400
             })
         }
 
@@ -47,7 +44,7 @@ export async function POST(req : NextRequest){
         const refreshToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken;
-        await user.save({ validateBeforeSave : false });
+        await user.save({ validateBeforeSave: false });
 
         await setAccessTokenCookie(accessToken);
         await setRefreshTokenCookie(refreshToken);
@@ -57,19 +54,19 @@ export async function POST(req : NextRequest){
         delete userObj.refreshToken;
 
         return NextResponse.json({
-            success : true,
-            data : userObj
+            success: true,
+            data: userObj
         }, {
-            status : 201
+            status: 200
         });
-        
-    }catch(err : any){
+
+    } catch (err: any) {
         console.error(err);
         return NextResponse.json({
-            success : false,
-            error : err.message
+            success: false,
+            error: err.message
         }, {
-            status : 500
+            status: 500
         })
     }
 }

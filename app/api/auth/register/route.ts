@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
 
         const existingUser = await User.findOne({ email: validatedData.email });
         if (existingUser) {
+            console.log("existingUser : ", existingUser);
             return NextResponse.json({
                 success: false,
                 error: "User with this email already exists"
@@ -60,10 +61,10 @@ export async function POST(req: NextRequest) {
         }
 
         const user = await User.create({
-            name: validatedData.name,        
-            email: validatedData.email,    
-            password: validatedData.password, 
-            role: validatedData.role,       
+            name: validatedData.name,
+            email: validatedData.email,
+            password: validatedData.password,
+            role: validatedData.role,
             avatar: {
                 public_id: avatarData.public_id,
                 secure_url: avatarData.secure_url,
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
 
 
         user.refreshToken = refreshToken;
-        await user.save({ validateBeforeSave : false });
+        await user.save({ validateBeforeSave: false });
 
         await setAccessTokenCookie(accessToken);
         await setRefreshTokenCookie(refreshToken);
